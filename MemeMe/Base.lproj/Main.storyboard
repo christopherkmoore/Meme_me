@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -32,7 +33,7 @@
                                     <constraint firstAttribute="height" constant="45" id="muM-yY-asc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="w5J-To-cJD">
                                 <rect key="frame" x="25" y="460" width="550" height="45"/>
@@ -51,18 +52,29 @@
                                     <constraint firstAttribute="width" constant="600" id="cRm-KX-hmO"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Pick" id="l7t-iU-cBK">
+                                    <barButtonItem title="Album" width="349" id="l7t-iU-cBK">
                                         <connections>
                                             <action selector="pickAnImage:" destination="BYZ-38-t0r" id="tJu-hw-TtR"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Pick" id="MHP-h5-bIn">
+                                    <barButtonItem title="Camera" id="MHP-h5-bIn">
                                         <connections>
                                             <action selector="pickAnImageCamera:" destination="BYZ-38-t0r" id="KLc-OG-Fm4"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ryr-xW-hpM">
+                                <rect key="frame" x="34" y="34" width="45" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="5Gc-kp-CND"/>
+                                    <constraint firstAttribute="width" constant="45" id="XEy-on-DcM"/>
+                                </constraints>
+                                <state key="normal" title="Share!"/>
+                                <connections>
+                                    <action selector="shareAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oqn-s5-Z7k"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -72,7 +84,9 @@
                             <constraint firstItem="GJ6-CK-sZ9" firstAttribute="top" secondItem="w5J-To-cJD" secondAttribute="bottom" constant="51" id="CcZ-8K-U01"/>
                             <constraint firstItem="GJ6-CK-sZ9" firstAttribute="top" secondItem="Q5d-oO-EkH" secondAttribute="bottom" constant="132" id="G98-Qb-0cg"/>
                             <constraint firstItem="GJ6-CK-sZ9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RYg-gZ-YyK"/>
+                            <constraint firstItem="ryr-xW-hpM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="14" id="Z9t-bE-Ns9"/>
                             <constraint firstItem="gjs-f7-m6b" firstAttribute="centerX" secondItem="GJ6-CK-sZ9" secondAttribute="centerX" id="ez5-6d-n5O"/>
+                            <constraint firstItem="ryr-xW-hpM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="14" id="kEV-an-x74"/>
                             <constraint firstItem="Q5d-oO-EkH" firstAttribute="centerX" secondItem="GJ6-CK-sZ9" secondAttribute="centerX" id="qmT-h9-EUF"/>
                         </constraints>
                     </view>
