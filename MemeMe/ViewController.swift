@@ -12,6 +12,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     
     
     
+    @IBOutlet weak var bottomToolbar: UIToolbar!
+    @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var topField: UITextField!
     @IBOutlet weak var bottomField: UITextField!
@@ -55,7 +57,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomField.isFirstResponder() {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
@@ -67,7 +71,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        view.frame.origin.y += getKeyboardHeight(notification)
+        if bottomField.isFirstResponder() {
+            view.frame.origin.y = 0
+        }
     }
     
     override func viewDidLoad() {
@@ -76,6 +82,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
         bottomField.attributedText = NSAttributedString(string: bottomField.text!, attributes: strokeAttributedText)
         topField.delegate = self
         bottomField.delegate = self
+        imagePickerView.contentMode = .ScaleAspectFit
         
         
         
@@ -133,13 +140,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     
 
     
-    @IBAction func shareAction(sender: UIButton) {
+    @IBAction func shareAction(sender: AnyObject) {
         
         func generateMemedImage() -> UIImage {
+            topToolbar.hidden = true
+            bottomToolbar.hidden = true
+            
             UIGraphicsBeginImageContext(self.view.frame.size)
             view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
             let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
+            
+            topToolbar.hidden = false
+            bottomToolbar.hidden = false
         
             return memedImage
         }
