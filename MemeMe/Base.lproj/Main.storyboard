@@ -53,7 +53,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QV4-xQ-QzY" userLabel="TopToolbar">
                                 <rect key="frame" x="0.0" y="22" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem title="Share!" id="vsw-lC-18j">
+                                    <barButtonItem systemItem="action" id="vsw-lC-18j">
                                         <connections>
                                             <action selector="shareAction:" destination="BYZ-38-t0r" id="ycf-Ni-6Hf"/>
                                         </connections>
