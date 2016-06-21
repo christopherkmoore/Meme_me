@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: ViewController, UIApplicationDelegate {
+class AppDelegate: MemeEditorViewController, UIApplicationDelegate {
 
     var window: UIWindow?
     

@@ -9,8 +9,11 @@
 import Foundation
 import UIKit
 
-class MemeTextFieldDelegate: NSObject, UITextFieldDelegate {
-    
-    
 
+struct Meme {
+    var topText : String
+    var botText : String
+    var image : UIImage
+    var memedImage : UIImage
+    
 }

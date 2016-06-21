@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController.swift
 //  MemeMe
 //
 //  Created by modelf on 6/11/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate {
     
     
     
@@ -22,14 +22,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     let strokeAttributedText = [
         NSStrokeColorAttributeName: UIColor.blackColor(),
         NSForegroundColorAttributeName : UIColor.whiteColor(),
-        NSStrokeWidthAttributeName: -1.0,
+        NSStrokeWidthAttributeName: -3.0,
         NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!
-        
-        
     ]
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        
+        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        
+        
+        topField.attributedText = NSAttributedString(string: topField.text!, attributes: strokeAttributedText)
+        bottomField.attributedText = NSAttributedString(string: bottomField.text!, attributes: strokeAttributedText)
+
         subscribeToKeyboardNotificationShow()
         subscribeToKeyboardNotificationHide()
 
@@ -58,15 +63,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     
     func keyboardWillShow(notification: NSNotification) {
         if bottomField.isFirstResponder() {
-            view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y = getKeyboardHeight(notification) * -1
         }
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
-        print(keyboardSize)
-        print(keyboardSize.CGRectValue().height)
         return keyboardSize.CGRectValue().height
     }
     
@@ -78,28 +81,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        topField.attributedText = NSAttributedString(string: topField.text!, attributes: strokeAttributedText)
-        bottomField.attributedText = NSAttributedString(string: bottomField.text!, attributes: strokeAttributedText)
         topField.delegate = self
         bottomField.delegate = self
         imagePickerView.contentMode = .ScaleAspectFit
         
-        
-        
-        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        textField.text? = ""
+        if topField.text == "TOP" || bottomField.text == "BOTTOM" {
+            textField.text? = ""
+        }
     }
     
-    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if topField.text == "" {
+            topField.text = "TOP"
+        }
+        else if bottomField.text == "" {
+            bottomField.text = "BOTTOM"
+        }
+    }
+
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
     
     @IBAction func pickAnImage(sender: AnyObject) {
         let imagePicker = UIImagePickerController()
@@ -114,31 +120,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
         imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
         presentViewController(imagePicker, animated: true, completion: nil)
     }
-    
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imagePickerView.image = image
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
-    }
-
-    
-    struct Meme {
-        var topText : String
-        var botText : String
-        var image : UIImage
-        var memedImage : UIImage
-        
-        init (topText: String, botText: String, image: UIImage, memedImage: UIImage) {
-            self.topText = topText
-            self.botText = botText
-            self.image = image
-            self.memedImage = memedImage
-        }
-    }
-    
-
     
     @IBAction func shareAction(sender: AnyObject) {
         
@@ -164,16 +145,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UITextF
         
         func save() {
             let meme = Meme(topText: topField.text!, botText: bottomField.text!, image: imagePickerView.image!, memedImage: contextSavedMeme)
-            
         }
         
+        activityViewController.completionWithItemsHandler = {
+            (activityType, completed, returneditems, activitiesError) in
+            if completed {
+                save()
+            }
+        }
     }
-    
-    
-
-
-
-
- 
 }
+
+    extension MemeEditorViewController {
+        
+        func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+            if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                imagePickerView.image = image
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
+ 
+
 
