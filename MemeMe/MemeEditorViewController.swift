@@ -10,8 +10,9 @@ import UIKit
 
 class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate {
     
+    var imagePicker = UIImagePickerController()
     
-    
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var bottomToolbar: UIToolbar!
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -28,6 +29,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        imagePicker.delegate = self
         
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         
@@ -37,7 +39,18 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
 
         subscribeToKeyboardNotificationShow()
         subscribeToKeyboardNotificationHide()
+        
+        if imagePickerView.image != nil {
+            shareButton.enabled = true
+        } else {
+            shareButton.enabled = false
+        }
+        
 
+    }
+    
+    func isImageLoaded () {
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -108,21 +121,18 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     @IBAction func pickAnImage(sender: AnyObject) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         presentViewController(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func pickAnImageCamera(sender: AnyObject) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
         presentViewController(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func shareAction(sender: AnyObject) {
         
+
         func generateMemedImage() -> UIImage {
             topToolbar.hidden = true
             bottomToolbar.hidden = true
@@ -165,6 +175,11 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             }
         }
     }
- 
+struct Meme {
+    var topText : String
+    var botText: String
+    var image: UIImage
+    var memedImage: UIImage
+}
 
 

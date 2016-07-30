@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q5d-oO-EkH">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q5d-oO-EkH">
                                 <rect key="frame" x="0.0" y="66" width="600" height="490"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="w5J-To-cJD">
@@ -96,6 +96,7 @@
                         <outlet property="bottomToolbar" destination="GJ6-CK-sZ9" id="Ivp-oM-sIq"/>
                         <outlet property="cameraButton" destination="MHP-h5-bIn" id="pTS-hJ-pgv"/>
                         <outlet property="imagePickerView" destination="Q5d-oO-EkH" id="OYL-X0-iNU"/>
+                        <outlet property="shareButton" destination="vsw-lC-18j" id="dWA-gu-Uku"/>
                         <outlet property="topField" destination="gjs-f7-m6b" id="YCK-aC-jsQ"/>
                         <outlet property="topToolbar" destination="QV4-xQ-QzY" id="Zol-AB-iyu"/>
                     </connections>
