@@ -30,6 +30,7 @@ class MemeCollectionViewController: UICollectionViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         collectionView?.reloadData()
+        self.tabBarController?.tabBar.hidden = false
     }
 
 
