@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -219,87 +220,45 @@
                         <viewControllerLayoutGuide type="bottom" id="k2B-d4-Y8r"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="GxZ-4I-piL">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xXB-9j-AJ8">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GXc-BO-tvg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="RK0-bB-CSi"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem title="Edit" id="aI7-xX-73n">
-                                        <connections>
-                                            <action selector="editMeme:" destination="TJ0-8p-MyW" id="Z6g-fL-FlC"/>
-                                            <segue destination="BYZ-38-t0r" kind="presentation" id="20Q-BQ-fb3"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="vxT-ae-18T"/>
-                                    <barButtonItem systemItem="trash" id="RFh-gs-AW9">
-                                        <connections>
-                                            <action selector="deleteMeme:" destination="TJ0-8p-MyW" id="HST-St-Wau"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="RK0-bB-CSi"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="RK0-bB-CSi"/>
-                                    </mask>
-                                </variation>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="GXc-BO-tvg" secondAttribute="trailing" constant="-20" id="4O9-uE-6Uu"/>
-                            <constraint firstItem="GXc-BO-tvg" firstAttribute="top" secondItem="xXB-9j-AJ8" secondAttribute="bottom" constant="-1" id="6WM-td-ao2"/>
-                            <constraint firstItem="k2B-d4-Y8r" firstAttribute="top" secondItem="GXc-BO-tvg" secondAttribute="bottom" id="H64-Zs-Els"/>
-                            <constraint firstItem="GXc-BO-tvg" firstAttribute="leading" secondItem="GxZ-4I-piL" secondAttribute="leadingMargin" constant="-20" id="Po9-Kb-WeE"/>
                             <constraint firstItem="xXB-9j-AJ8" firstAttribute="top" secondItem="ypQ-4M-OYV" secondAttribute="bottom" constant="9" id="UgC-E4-3R2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xXB-9j-AJ8" secondAttribute="trailing" constant="-20" id="ofM-id-FvL"/>
+                            <constraint firstItem="k2B-d4-Y8r" firstAttribute="top" secondItem="xXB-9j-AJ8" secondAttribute="bottom" id="s2D-7X-zIK"/>
                             <constraint firstItem="xXB-9j-AJ8" firstAttribute="leading" secondItem="GxZ-4I-piL" secondAttribute="leadingMargin" constant="-20" id="zEe-Qe-O7k"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="xXB-9j-AJ8"/>
-                                <exclude reference="GXc-BO-tvg"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="UgC-E4-3R2"/>
                                 <exclude reference="ofM-id-FvL"/>
                                 <exclude reference="zEe-Qe-O7k"/>
-                                <exclude reference="4O9-uE-6Uu"/>
-                                <exclude reference="6WM-td-ao2"/>
-                                <exclude reference="Po9-Kb-WeE"/>
-                                <exclude reference="H64-Zs-Els"/>
+                                <exclude reference="s2D-7X-zIK"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="xXB-9j-AJ8"/>
-                                <include reference="GXc-BO-tvg"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="UgC-E4-3R2"/>
                                 <include reference="ofM-id-FvL"/>
                                 <include reference="zEe-Qe-O7k"/>
-                                <include reference="4O9-uE-6Uu"/>
-                                <include reference="6WM-td-ao2"/>
-                                <include reference="Po9-Kb-WeE"/>
-                                <include reference="H64-Zs-Els"/>
+                                <include reference="s2D-7X-zIK"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="dismissButton" destination="aI7-xX-73n" id="Imi-c0-1Qk"/>
                         <outlet property="memeImage" destination="xXB-9j-AJ8" id="oYN-CW-aoq"/>
-                        <outlet property="trashButton" destination="RFh-gs-AW9" id="CEb-JA-L9y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kEs-CA-6Od" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -523,6 +482,6 @@
         <image name="TableView" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="20Q-BQ-fb3"/>
+        <segue reference="Ox7-nH-TPs"/>
     </inferredMetricsTieBreakers>
 </document>

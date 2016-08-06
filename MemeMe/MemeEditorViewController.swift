@@ -33,18 +33,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!
     ]
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        imagePicker.delegate = self
-        
-        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-        
+    func configure() {
         
         topField.attributedText = NSAttributedString(string: topField.text!, attributes: strokeAttributedText)
         bottomField.attributedText = NSAttributedString(string: bottomField.text!, attributes: strokeAttributedText)
+        
+        topField.delegate = self
+        bottomField.delegate = self
+        imagePicker.delegate = self
 
-        subscribeToKeyboardNotificationShow()
-        subscribeToKeyboardNotificationHide()
+//        imagePickerView.contentMode = .ScaleAspectFit
         
         if imagePickerView.image != nil {
             shareButton.enabled = true
@@ -52,29 +50,39 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             shareButton.enabled = false
         }
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        
+        configure()
 
+        subscribeToKeyboardNotificationShow()
+ 
+        if let meme = meme {
+            imagePickerView.image = meme.image
+        }
     }
 
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
-        unsubscribeToKeyboardNotificationsHide()
-        unsubscribeToKeyboardNotificationShow()
+            unsubscribeToKeyboardNotificationShow()
     }
     
     func subscribeToKeyboardNotificationShow() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-    }
-    func subscribeToKeyboardNotificationHide() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+
     }
+
     
     func unsubscribeToKeyboardNotificationShow() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-    }
-    
-    func unsubscribeToKeyboardNotificationsHide() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -90,18 +98,9 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if bottomField.isFirstResponder() {
             view.frame.origin.y = 0
-        }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        topField.delegate = self
-        bottomField.delegate = self
-        imagePickerView.contentMode = .ScaleAspectFit
-        
-    }
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if topField.text == "TOP" || bottomField.text == "BOTTOM" {
@@ -124,25 +123,19 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     func save() {
-        
-        if let existingMeme = meme {
-            existingMeme.topText = topField.text!
-            existingMeme.botText = bottomField.text!
-            existingMeme.image = imagePickerView.image!
-            existingMeme.memedImage = memedImage
-
-        } else {
-            print(topField.text!)
-            print(bottomField.text!)
-            print(imagePickerView.image!)
-            print(memedImage)
-            
+//        if let existingMeme = meme {
+//            existingMeme.topText: topField.text!
+//            existingMeme.botText: bottomField.text!
+//            existingMeme.image: imagePickerView.image!
+//            existingMeme.memedImage: memedImage
+//
+//        } else {
+//
+//            
             let newMeme = Meme(topText: topField.text!, botText: bottomField.text!, image: imagePickerView.image!, memedImage: memedImage)
             let object = UIApplication.sharedApplication().delegate as! AppDelegate
             
             object.memes.append(newMeme)
-        
-        }
     }
     
     func generateMemedImage() -> UIImage {
@@ -181,23 +174,23 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         
         activityViewController.completionWithItemsHandler = {
             (activityType, completed, returneditems, activitiesError) in
-            self.save()
-            activityViewController.dismissViewControllerAnimated(true, completion: nil)
+//            if (completed) {
+                self.save()
+                activityViewController.dismissViewControllerAnimated(true, completion: nil)
+                self.dismissViewControllerAnimated(true, completion: nil)
+//            }
+        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            imagePickerView.image = image
             self.dismissViewControllerAnimated(true, completion: nil)
-            
         }
     }
 }
 
-    extension MemeEditorViewController {
-        
-        func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
-            if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                imagePickerView.image = image
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
+
 
 
 
