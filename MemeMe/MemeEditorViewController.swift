@@ -11,6 +11,8 @@ import UIKit
 class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate {
     
     var imagePicker = UIImagePickerController()
+    var meme : Meme?
+    var memedImage : UIImage!
     
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var bottomToolbar: UIToolbar!
@@ -19,6 +21,10 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var topField: UITextField!
     @IBOutlet weak var bottomField: UITextField!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    
+    @IBAction func dismissVC(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     let strokeAttributedText = [
         NSStrokeColorAttributeName: UIColor.blackColor(),
@@ -48,10 +54,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         
 
     }
-    
-    func isImageLoaded () {
-        
-    }
+
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
@@ -120,6 +123,44 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         return true
     }
     
+    func save() {
+        
+        if let existingMeme = meme {
+            existingMeme.topText = topField.text!
+            existingMeme.botText = bottomField.text!
+            existingMeme.image = imagePickerView.image!
+            existingMeme.memedImage = memedImage
+
+        } else {
+            print(topField.text!)
+            print(bottomField.text!)
+            print(imagePickerView.image!)
+            print(memedImage)
+            
+            let newMeme = Meme(topText: topField.text!, botText: bottomField.text!, image: imagePickerView.image!, memedImage: memedImage)
+            let object = UIApplication.sharedApplication().delegate as! AppDelegate
+            
+            object.memes.append(newMeme)
+        
+        }
+    }
+    
+    func generateMemedImage() -> UIImage {
+        topToolbar.hidden = true
+        bottomToolbar.hidden = true
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        topToolbar.hidden = false
+        bottomToolbar.hidden = false
+        
+        return memedImage
+    }
+    
+    
     @IBAction func pickAnImage(sender: AnyObject) {
         imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         presentViewController(imagePicker, animated: true, completion: nil)
@@ -133,35 +174,17 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func shareAction(sender: AnyObject) {
         
 
-        func generateMemedImage() -> UIImage {
-            topToolbar.hidden = true
-            bottomToolbar.hidden = true
-            
-            UIGraphicsBeginImageContext(self.view.frame.size)
-            view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
-            let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            topToolbar.hidden = false
-            bottomToolbar.hidden = false
+        memedImage = generateMemedImage()
         
-            return memedImage
-        }
-        
-        let contextSavedMeme = generateMemedImage()
-        
-        let activityViewController = UIActivityViewController(activityItems: [contextSavedMeme], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
         presentViewController(activityViewController, animated: true, completion: nil)
-        
-        func save() {
-            let meme = Meme(topText: topField.text!, botText: bottomField.text!, image: imagePickerView.image!, memedImage: contextSavedMeme)
-        }
         
         activityViewController.completionWithItemsHandler = {
             (activityType, completed, returneditems, activitiesError) in
-            if completed {
-                save()
-            }
+            self.save()
+            activityViewController.dismissViewControllerAnimated(true, completion: nil)
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
         }
     }
 }
@@ -175,11 +198,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             }
         }
     }
-struct Meme {
-    var topText : String
-    var botText: String
-    var image: UIImage
-    var memedImage: UIImage
-}
+
 
 
