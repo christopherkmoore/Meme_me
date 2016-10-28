@@ -12,23 +12,23 @@ import UIKit
 class MemeTableViewController: UITableViewController {
     
     var memes : [Meme] {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
+        return (UIApplication.shared.delegate as! AppDelegate).memes
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        self.tabBarController?.tabBar.hidden = false
+        self.tabBarController?.tabBar.isHidden = false
         tableView.reloadData()
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let meme = memes[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableViewCell") as! CustomTableCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let meme = memes[(indexPath as NSIndexPath).row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! CustomTableCell
         cell.memeImageView?.image = meme.memedImage
         cell.memeTopLabel?.text = "\(meme.topText)"
         cell.memeBottomLabel?.text = "\(meme.botText)"
@@ -37,9 +37,9 @@ class MemeTableViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let controller = storyboard?.instantiateViewControllerWithIdentifier("MemeDetailsViewController") as! MemeDetailsViewController
-        controller.selectedMeme = memes[indexPath.row]
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "MemeDetailsViewController") as! MemeDetailsViewController
+        controller.selectedMeme = memes[(indexPath as NSIndexPath).row]
         
         navigationController?.pushViewController(controller, animated: true)
     }
